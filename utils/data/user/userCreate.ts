@@ -2,7 +2,7 @@
 
 import { db } from "@/db/drizzle";
 import { users } from "@/db/schema";
-import { userCreateProps } from "@/utils/types";
+import type { userCreateProps } from "@/utils/types";
 
 export const userCreate = async ({
   email,
@@ -28,7 +28,10 @@ export const userCreate = async ({
     }).returning();
 
     return result;
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('An unknown error occurred');
   }
 };

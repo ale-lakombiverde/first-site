@@ -84,9 +84,9 @@ export default async function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="h-[200px] flex items-end gap-2">
-              {[40, 25, 45, 30, 60, 75, 65, 45, 50, 65, 70, 80].map((height, i) => (
+              {[40, 25, 45, 30, 60, 75, 65, 45, 50, 65, 70, 80].map((height, month) => (
                 <div
-                  key={i}
+                  key={`month-${month + 1}`}
                   className="bg-primary/10 hover:bg-primary/20 rounded-md w-full transition-colors"
                   style={{ height: `${height}%` }}
                 />
@@ -190,22 +190,25 @@ export default async function Dashboard() {
             <div className="space-y-4">
               {[
                 {
+                  id: 'feature-release',
                   title: "New Feature Released",
                   description: "Enhanced project analytics and reporting tools are now available.",
                   time: "2 hours ago"
                 },
                 {
+                  id: 'system-update',
                   title: "System Update",
                   description: "Performance improvements and bug fixes deployed.",
                   time: "5 hours ago"
                 },
                 {
+                  id: 'community-milestone',
                   title: "Community Milestone",
                   description: "Over 1,000 projects created using Nextjs Starter Kit!",
                   time: "1 day ago"
                 }
-              ].map((update, i) => (
-                <div key={i} className="flex justify-between gap-4">
+              ].map((update) => (
+                <div key={update.id} className="flex justify-between gap-4">
                   <div>
                     <p className="text-sm font-medium">{update.title}</p>
                     <p className="text-sm text-muted-foreground">{update.description}</p>
