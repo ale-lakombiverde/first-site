@@ -25,7 +25,7 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   reasoning?: string;
-  timestamp: Date;
+  timestamp?: Date;
 }
 
 export default function PlaygroundPage() {
@@ -107,9 +107,9 @@ export default function PlaygroundPage() {
         <ScrollArea className="flex-1 p-4">
           <div className="max-w-3xl mx-auto space-y-6">
             <AnimatePresence>
-              {messages.map((message, index) => (
+              {messages.map((message) => (
                 <motion.div
-                  key={index}
+                  key={`${message.role}-${Date.now()}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
@@ -131,17 +131,18 @@ export default function PlaygroundPage() {
                         }`}
                       >
                         <button
-                          onClick={() => toggleReasoning(index)}
+                          type="button"
+                          onClick={() => toggleReasoning(messages.indexOf(message))}
                           className="w-full flex items-center justify-between px-3 py-2"
                         >
                           <span className="text-xs font-medium opacity-70">Reasoning</span>
-                          {expandedReasoning.includes(index) ? (
+                          {expandedReasoning.includes(messages.indexOf(message)) ? (
                             <ChevronUp className="w-3 h-3 opacity-70" />
                           ) : (
                             <ChevronDown className="w-3 h-3 opacity-70" />
                           )}
                         </button>
-                        {expandedReasoning.includes(index) && (
+                        {expandedReasoning.includes(messages.indexOf(message)) && (
                           <div className="px-3 pb-3 text-[12px] opacity-70">
                             <ReactMarkdown>{message.reasoning}</ReactMarkdown>
                           </div>
@@ -248,7 +249,7 @@ export default function PlaygroundPage() {
 
             <TabsContent value="model" className="mt-4 space-y-4">
               <div>
-                <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                <label htmlFor="model" className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
                   Model
                 </label>
                 <Select value={model} onValueChange={setModel}>
@@ -284,7 +285,7 @@ export default function PlaygroundPage() {
             <TabsContent value="parameters" className="mt-4 space-y-4">
               <div className="space-y-4">
                 <div>
-                  <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                  <label htmlFor="temperature" className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
                     Temperature ({temperature})
                   </label>
                   <Slider
@@ -296,7 +297,7 @@ export default function PlaygroundPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                  <label htmlFor="maxTokens" className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
                     Max Tokens ({maxTokens})
                   </label>
                   <Slider
@@ -308,7 +309,7 @@ export default function PlaygroundPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                  <label htmlFor="topP" className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
                     Top P ({topP})
                   </label>
                   <Slider
@@ -320,7 +321,7 @@ export default function PlaygroundPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                  <label htmlFor="frequencyPenalty" className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
                     Frequency Penalty ({frequencyPenalty})
                   </label>
                   <Slider
@@ -332,7 +333,7 @@ export default function PlaygroundPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                  <label htmlFor="presencePenalty" className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
                     Presence Penalty ({presencePenalty})
                   </label>
                   <Slider
@@ -347,7 +348,7 @@ export default function PlaygroundPage() {
 
             <TabsContent value="system" className="mt-4 space-y-4">
               <div>
-                <label className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
+                <label htmlFor="systemPrompt" className="text-xs dark:text-zinc-400 text-zinc-600 mb-2 block">
                   System Prompt
                 </label>
                 <Textarea
